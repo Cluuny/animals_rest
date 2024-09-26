@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import co.edu.uptc.animals_rest.exception.InvalidRangeException;
 import co.edu.uptc.animals_rest.models.Animal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +61,15 @@ public class AnimalService {
         }
     
         return animales;
+    }
+
+    @GetMapping("/numberByCategory")
+    public Map<String, Integer> getNumberByCategory () throws IOException {
+        Map<String, Integer> categoryCount = new HashMap<>();
+        for (Animal animal : this.getAnimalAll()) {
+            categoryCount.put(animal.getCategory(), categoryCount.getOrDefault(animal.getCategory(), 0) + 1);
+        }
+        return categoryCount;
     }
 }
 
